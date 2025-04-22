@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import backgroundImg from "../img/diary_background.png"; // 배경 이미지 import
+import backgroundImg from "../img/diary_background.png"; 
+import { useNavigate } from 'react-router-dom';
 
 const DiaryPage = () => {
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
   const [title, setTitle] = useState("");
   const [diaryContent, setDiaryContent] = useState("");
   const [file, setFile] = useState(null);
+  const navigate = useNavigate();
+
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -19,16 +22,14 @@ const DiaryPage = () => {
       file,
     });
     alert("일기가 저장되었습니다!");
+    navigate("/analyzing");  
   };
-
+  
   return (
-    // 전체 배경
     <div style={backgroundStyle}>
-      {/* 가운데 카드 */}
       <div style={pageStyle}>
         <h1 style={titleStyle}>Write about your day</h1>
 
-        {/* Date와 Title을 나란히 */}
         <div style={horizontalGroupStyle}>
           <div style={smallInputGroupStyle}>
             <label style={labelStyle}>Date</label>
@@ -102,6 +103,8 @@ const pageStyle = {
   padding: "4rem",
   background: "linear-gradient(180deg, #0F0E20 0%, #3F3B86 51%, #3F3B86 100%)",
   marginTop: "7rem",
+  marginBottom: "3rem",
+  overflowX: 'hidden',
   borderRadius: "20px",
   boxShadow: "0 8px 32px rgba(0, 0, 0, 0.5)",
   color: "white",
@@ -111,21 +114,24 @@ const pageStyle = {
 };
 
 const titleStyle = {
-  fontSize: "2.5rem",
+  fontSize: "38px",
   fontWeight: "bold",
   textAlign: "center",
+  marginTop: "0"
 };
 
 const horizontalGroupStyle = {
   display: "flex",
-  justifyContent: "space-between", // 두 개를 양쪽으로 벌리기
+  justifyContent: "space-between", 
   gap: "4rem",
+  width: "97%",  
 };
 
 const smallInputGroupStyle = {
   display: "flex",
   flexDirection: "column",
   flex: "1",
+  width: "50%",
 };
 
 const smallInputStyle = {
