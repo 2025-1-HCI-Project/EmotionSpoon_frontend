@@ -1,5 +1,6 @@
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+
 
 const headerStyle = `
   .header {
@@ -70,6 +71,25 @@ const headerStyle = `
     text-decoration: none;
     white-space: nowrap;
   }
+  .menu-button {
+  background: none;
+  border: none;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  padding: 0;
+  text-decoration: none;
+}
+
+.menu-button:hover {
+  color: #ff4d6d;
+}
+
+.menu-button.active {
+  color: #ff4d6d;
+}
 
   @media (max-width: 768px) {
     .header-inner {
@@ -90,7 +110,23 @@ const headerStyle = `
 
 const Header = () => {
     const location = useLocation();
+    const navigate = useNavigate();
     const currentPath = location.pathname;
+
+    const [username, setUsername] = useState(null);
+
+    useEffect(() => {
+        const storedUsername = localStorage.getItem("username");
+        setUsername(storedUsername);
+    }, [location]);
+
+    const handleLogout = () => {
+        localStorage.removeItem("jwt_token");
+        localStorage.removeItem("username");
+        setUsername(null);
+        alert("로그아웃 되었습니다.");
+        navigate("/");
+    };
 
     return (
         <>
@@ -105,8 +141,18 @@ const Header = () => {
                         <Link to="/diary" className={currentPath === '/diary' ? 'active' : ''}>Diary</Link>
                         <Link to="/playlist" className={currentPath === '/playlist' ? 'active' : ''}>Playlist</Link>
                         <Link to="/explore" className={currentPath === '/explore' ? 'active' : ''}>Explore</Link>
-                        <Link to="/login" className={currentPath === '/login' ? 'active' : ''}>Log In</Link>
-                        <Link to="/register" className={`register-btn ${currentPath === '/register' ? 'active' : ''}`}>Register</Link>
+
+                        {username ? (
+                            <>
+                                <span style={{ color: 'white', fontWeight: 'bold' }}>{username}님</span>
+                                <button onClick={handleLogout} className={`menu-button ${currentPath === '/logout' ? 'active' : ''}`}>
+                                    Log Out
+                                </button>
+                            </>
+                        ) : (
+                            <Link to="/login" className={currentPath === '/login' ? 'active' : ''}>Log In</Link>
+                        )}
+
                     </div>
                 </div>
             </div>
