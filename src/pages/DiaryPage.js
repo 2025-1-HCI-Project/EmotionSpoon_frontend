@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import backgroundImg from "../img/diary_background.png";
 import { useNavigate } from 'react-router-dom';
-import ApiService from "../util/ApiService"; // 추가
+import ApiService from "../util/ApiService";
 
 const DiaryPage = () => {
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
@@ -16,8 +16,15 @@ const DiaryPage = () => {
 
   const handleSave = async () => {
     try {
+      const storedMemberId = localStorage.getItem("memberId");
+      if (!storedMemberId) {
+        alert("로그인이 필요합니다.");
+        navigate("/login");
+        return;
+      }
+
       const diaryDTO = {
-        memberId: 1,
+        memberId: parseInt(storedMemberId),
         date: date,
         title: title,
         diaryContent: diaryContent,
@@ -38,7 +45,6 @@ const DiaryPage = () => {
       alert("업로드 실패. 콘솔을 확인해주세요.");
     }
   };
-
 
   return (
       <div style={backgroundStyle}>
@@ -137,9 +143,9 @@ const titleStyle = {
 
 const horizontalGroupStyle = {
   display: "flex",
-  justifyContent: "space-between", 
+  justifyContent: "space-between",
   gap: "4rem",
-  width: "97%",  
+  width: "97%",
 };
 
 const smallInputGroupStyle = {
