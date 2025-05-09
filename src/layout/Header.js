@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-
+import React, { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const headerStyle = `
   .header {
     position: absolute;
-    top: 0;
+    top: 10;
     left: 0;
     width: 100%;
     padding: 20px;
@@ -19,10 +18,11 @@ const headerStyle = `
     width: 100%;
     max-width: 1200px;
     display: flex;
+    padding: 0 20px;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 16px;
   }
 
   .logo {
@@ -35,7 +35,7 @@ const headerStyle = `
 
   .search-box {
     flex: 1 1 200px;
-    max-width: 300px;
+    max-width: 350px;
     background-color: rgba(255,255,255,0.2);
     border-radius: 30px;
     padding: 8px 16px;
@@ -48,7 +48,7 @@ const headerStyle = `
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 16px;
+    gap: 20px;
   }
 
   .menu a {
@@ -65,12 +65,14 @@ const headerStyle = `
     background-color: #ff4d6d;
     color: white;
     border: none;
-    padding: 8px 16px;
+    padding: 7px 30px;
     border-radius: 30px;
     font-weight: bold;
     text-decoration: none;
     white-space: nowrap;
+    margin-left: 50px;
   }
+    
   .menu-button {
   background: none;
   border: none;
@@ -88,7 +90,7 @@ const headerStyle = `
 }
 
 .menu-button.active {
-  color: #ff4d6d;
+  color: #FA2870;
 }
 
   @media (max-width: 768px) {
@@ -109,57 +111,83 @@ const headerStyle = `
 `;
 
 const Header = () => {
-    const location = useLocation();
-    const navigate = useNavigate();
-    const currentPath = location.pathname;
+  const location = useLocation();
+  const navigate = useNavigate();
+  const currentPath = location.pathname;
 
-    const [username, setUsername] = useState(null);
+  const [username, setUsername] = useState(null);
 
-    useEffect(() => {
-        const storedUsername = localStorage.getItem("username");
-        setUsername(storedUsername);
-    }, [location]);
+  useEffect(() => {
+    const storedUsername = localStorage.getItem("username");
+    setUsername(storedUsername);
+  }, [location]);
 
-    const handleLogout = () => {
-        localStorage.removeItem("jwt_token");
-        localStorage.removeItem("username");
-        setUsername(null);
-        alert("로그아웃 되었습니다.");
-        navigate("/");
-    };
+  const handleLogout = () => {
+    localStorage.removeItem("jwt_token");
+    localStorage.removeItem("username");
+    setUsername(null);
+    alert("로그아웃 되었습니다.");
+    navigate("/");
+  };
 
-    return (
-        <>
-            <div className="header">
-                <div className="header-inner">
-                    <Link to="/" className="logo">EMOTION SPOON 🎧</Link>
+  return (
+    <>
+      <div className="header">
+        <div className="header-inner">
+          <Link to="/" className="logo">
+            EMOTION SPOON 🎧
+          </Link>
 
-                    <input className="search-box" type="text" placeholder="Search" />
+          <input className="search-box" type="text" placeholder="Search" />
 
-                    <div className="menu">
-                        <Link to="/" className={currentPath === '/' ? 'active' : ''}>Home</Link>
-                        <Link to="/diary" className={currentPath === '/diary' ? 'active' : ''}>Diary</Link>
-                        <Link to="/playlist" className={currentPath === '/playlist' ? 'active' : ''}>Playlist</Link>
-                        <Link to="/explore" className={currentPath === '/explore' ? 'active' : ''}>Explore</Link>
+          <div className="menu">
+            <Link to="/" className={currentPath === "/" ? "active" : ""}>
+              Home
+            </Link>
+            <Link
+              to="/diary"
+              className={currentPath === "/diary" ? "active" : ""}
+            >
+              Diary
+            </Link>
+            <Link
+              to="/calendar"
+              className={currentPath === "/calendar" ? "active" : ""}
+            >
+              Calendar
+            </Link>
 
-                        {username ? (
-                            <>
-                                <span style={{ color: 'white', fontWeight: 'bold' }}>{username}님</span>
-                                <button onClick={handleLogout} className={`menu-button ${currentPath === '/logout' ? 'active' : ''}`}>
-                                    Log Out
-                                </button>
-                            </>
-                        ) : (
-                            <Link to="/login" className={currentPath === '/login' ? 'active' : ''}>Log In</Link>
-                        )}
+            {username ? (
+              <>
+                <span style={{ color: "white", fontWeight: "bold" }}>
+                  {username}님
+                </span>
+                <button
+                  onClick={handleLogout}
+                  className={`menu-button ${
+                    currentPath === "/logout" ? "active" : ""
+                  }`}
+                >
+                  Log Out
+                </button>
+              </>
+            ) : (
+              <Link
+                to="/login"
+                className={`register-btn ${
+                  currentPath === "/login" ? "active" : ""
+                }`}
+              >
+                Log In
+              </Link>
+            )}
+          </div>
+        </div>
+      </div>
 
-                    </div>
-                </div>
-            </div>
-
-            <style>{headerStyle}</style>
-        </>
-    );
+      <style>{headerStyle}</style>
+    </>
+  );
 };
 
 export default Header;
