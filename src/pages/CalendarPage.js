@@ -73,11 +73,6 @@ const CalendarPage = () => {
         <div style={rightStyle}>
           <h1 style={{ marginBottom: '1.5rem' }}>{selectedEvent?.title || 'Title'}</h1>
           <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
-            <img
-              src={selectedEvent?.coverUrl || '/img/calendar_ex_img.png'} 
-              alt="앨범 커버"
-              style={{ width: '64px', height: '64px', borderRadius: '0.5rem', marginRight: '1rem' }}
-            />
             <div style={{ flex: 1 }}>
               <div style={{ fontWeight: 'bold' }}>{selectedEvent?.subtitle || '제목'}</div>
               <div style={{ opacity: 0.7 }}>{selectedEvent?.artist || 'artist'}</div>

@@ -1,4 +1,4 @@
-{/*import React from 'react';
+import React from 'react';
 import { FaFacebookF, FaInstagram, FaXTwitter } from 'react-icons/fa6';
 
 const footerStyle = `
@@ -77,4 +77,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;*/}
+export default Footer;
