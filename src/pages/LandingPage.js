@@ -94,7 +94,7 @@ const LandingPage = () => {
           and recommend music and playlists that match your mood.
         </div>
         <Link
-          to="/diary"
+          to="/login"
           className={currentPath === "/diary" ? "active" : ""}
           style={{
             padding: "1rem 2rem",
@@ -108,7 +108,7 @@ const LandingPage = () => {
             display: "inline-block",
           }}
         >
-          Write your day
+          Log in
         </Link>
       </div>
 
