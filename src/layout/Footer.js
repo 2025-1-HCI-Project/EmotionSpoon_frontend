@@ -16,13 +16,14 @@ const footerStyle = `
 
   .footer-top {
     width: 100%;
-    max-width: 1400px;
+    max-width: 1000px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-
+  
+    
   .footer-icons {
     display: flex;
     gap: 20px;
@@ -30,7 +31,7 @@ const footerStyle = `
   }
 
   .footer-line {
-    width: 80%;
+    width: 75%;
     height: 1px;
     background-color: #444;
     margin: 20px 0;

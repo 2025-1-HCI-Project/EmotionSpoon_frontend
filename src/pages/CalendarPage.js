@@ -74,7 +74,7 @@ const CalendarPage = () => {
           <h1 style={{ marginBottom: '1.5rem' }}>{selectedEvent?.title || 'Title'}</h1>
           <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
             <div style={{ flex: 1 }}>
-              <div style={{ fontWeight: 'bold' }}>{selectedEvent?.subtitle || '제목'}</div>
+              <div style={{ fontWeight: 'bold' }}>{selectedEvent?.subtitle || 'Music Title'}</div>
               <div style={{ opacity: 0.7 }}>{selectedEvent?.artist || 'artist'}</div>
             </div>
             <div style={{ opacity: 0.7, marginRight: '1rem' }}>{selectedEvent?.length || '2:56'}</div>
@@ -102,7 +102,7 @@ const CalendarPage = () => {
         }
         .custom-calendar .react-calendar__navigation button {
           color: white;
-          min-width: 44px;
+          min-width: 50px;
           background: none;
           font-size: 1.25rem;
         }

@@ -49,9 +49,6 @@ const LoginPage = () => {
           />
           <FaLock className="icon" />
         </div>
-        <Link to="/forgot" className="forgot-link">
-          Forgot Password?
-        </Link>
         <button type="submit" className="login-button">
           Login
         </button>

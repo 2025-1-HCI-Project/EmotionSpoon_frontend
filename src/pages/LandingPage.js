@@ -54,7 +54,7 @@ const LandingPage = () => {
     <div style={{ width: "100%", overflowX: "hidden" }}>
       <div
         style={{
-          width: "100%",
+          width: "100",
           height: "100vh",
           backgroundImage: `url(${backgroundImg})`,
           backgroundSize: "cover",
@@ -99,9 +99,10 @@ const LandingPage = () => {
           style={{
             padding: "1rem 2rem",
             fontSize: "1.2rem",
-            backgroundColor: "#ff4ec7",
+            backgroundColor: "#EE10B0",
             color: "white",
             border: "none",
+            fontWeight: "bold",
             borderRadius: "8px",
             textDecoration: "none",
             display: "inline-block",
@@ -116,7 +117,7 @@ const LandingPage = () => {
         className={`fade-in-up ${isTracksVisible ? "visible" : ""}`}
         style={{
           background:
-            "linear-gradient(180deg, #000000 5%, #000000 14%, #010000 29%, #A41045 60%, #000000 91%)",
+            "linear-gradient(180deg, #000000 5%, #000000 14%, #010000 29%,  rgba(164,16,69,0.4) 50%, #000000 91%)",
           padding: "5rem 10%",
           color: "white",
           textAlign: "center",
@@ -170,7 +171,7 @@ const trackCardStyle = {
   border: "1px solid rgba(217, 217, 217, 0.16)",
   padding: "2rem",
   borderRadius: "1rem",
-  width: "220px",
+  width: "300px",
   backdropFilter: "blur(10px)",
   boxShadow: "0 8px 32px rgba(0, 0, 0, 0.5)",
   transition: "transform 0.3s",
