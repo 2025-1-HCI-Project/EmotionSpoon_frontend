@@ -1,8 +1,9 @@
 .signup-page {
-  width: 100%;
+  width: 88%;
   height: 100vh;
   background: url("../img/signup_background.png") right/cover no-repeat;
   display: flex;
+  margin-left: 12%;
   justify-content: flex-start;
   align-items: center;
   position: relative;
@@ -19,10 +20,8 @@
   z-index: 1;
   width: 450px;
   padding: 3rem 2.5rem;
-  border-radius: 12px;
-  background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(30px);
-  margin-left: 240px;
+  margin-left: 70px;
   color: #fff;
 }
 
@@ -84,4 +83,23 @@
   color: #ccc;
   text-align: left;
   line-height: 1.4;
+}
+
+.forgot-link {
+  display: inline-block;
+  margin-left: 0.5rem;
+  font-size: 0.9rem;
+  color: #ff5f7e;         
+  text-decoration: none;
+}
+
+.forgot-link:hover {
+  text-decoration: underline;
+}
+
+.login-prompt {
+  margin-top: 0.2rem;
+  font-size: 0.9rem;
+  text-align: center; 
+  color: #ccc;
 }

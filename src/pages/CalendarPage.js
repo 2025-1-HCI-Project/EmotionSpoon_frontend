@@ -72,6 +72,8 @@ const CalendarPage = () => {
         </div>
         <div style={rightStyle}>
           <h1 style={{ marginBottom: '1.5rem' }}>{selectedEvent?.title || 'Title'}</h1>
+          <div style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>Date</div>
+          <div style={{ opacity: 0.7, marginBottom: '1.5rem' }}>{formattedDate}</div>
           <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
             <div style={{ flex: 1 }}>
               <div style={{ fontWeight: 'bold' }}>{selectedEvent?.subtitle || 'Music Title'}</div>
@@ -83,8 +85,6 @@ const CalendarPage = () => {
               borderRadius: '50%', width: '32px', height: '32px', color: 'white', cursor: 'pointer'
             }}>▶</button>
           </div>
-          <div style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>Date</div>
-          <div style={{ opacity: 0.7, marginBottom: '1.5rem' }}>{formattedDate}</div>
           <div style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>Diary</div>
           <div style={{ marginBottom: '1rem' }}>{selectedEvent?.diary || ''}</div>
           {Array.from({ length: 6 }).map((_, i) => (
