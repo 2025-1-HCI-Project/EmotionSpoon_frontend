@@ -19,19 +19,24 @@ const ApiService = {
         return apiInstance.post('/api/member/login', data);
     },
 
-    //📔일기장 업로드 Api
-    diaryUpload: async (file, diaryDTO) => {
+    // 📔일기 업로드 Api
+    diarySave: (file, diaryDTO) => {
         const formData = new FormData();
         formData.append("dto", new Blob([JSON.stringify(diaryDTO)], { type: "application/json" }));
         if (file) {
             formData.append("file", file);
         }
-
-        return axios.post(`${BASE_URL}/api/diary/upload`, formData, {
+        return axios.post(`${BASE_URL}/api/diary/save`, formData, {
             headers: { "Content-Type": "multipart/form-data" },
             withCredentials: true,
         });
-    }
+    },
+
+    analyzeDiary: (diaryId) => {
+        return axios.post(`${BASE_URL}/api/diary/analyze`, { id: diaryId }, {
+            withCredentials: true,
+        });
+    },
 };
 
 export default ApiService;

@@ -55,7 +55,7 @@ const LandingPage = () => {
       <div
         style={{
           width: "100",
-          height: "100vh",
+          height: "140vh",
           backgroundImage: `url(${backgroundImg})`,
           backgroundSize: "cover",
           backgroundPosition: "top",
