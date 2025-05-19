@@ -7,6 +7,7 @@ import CalendarPage from "./pages/CalendarPage";
 import Header from "./layout/Header";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
+import AnalyzingPlaylistPage from "./pages/AnalyzingPlaylistPage";
 
 function MyRoutes() {
   const { pathname } = useLocation();
@@ -21,9 +22,10 @@ function MyRoutes() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/diary" element={<DiaryPage />} />
-        <Route path="/analyzing" element={<AnalyzingPage />} />
+        <Route path="/analyzing/:id" element={<AnalyzingPage />} />
+        <Route path="/analyzing/:id/playlist" element={<AnalyzingPlaylistPage />} />
         <Route path="/calendar" element={<CalendarPage />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/login" element={<LoginPage />} />4
         <Route path="/signup" element={<SignUpPage />} />
       </Routes>
     </>

@@ -1,69 +1,90 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import ApiService from "../util/ApiService";
 import backgroundImg from "../img/Analyzing_playlist_background.png";
 import songThumbnail from "../img/example.png";
 
 const AnalyzingPlaylistPage = () => {
+  const { id } = useParams();
+  const [playlist, setPlaylist] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPlaylist = async () => {
+      try {
+        const response = await ApiService.getPlaylist(id);
+        setPlaylist(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("추천곡 불러오기 실패", error);
+        setLoading(false);
+      }
+    };
+    fetchPlaylist();
+  }, [id]);
+
   return (
-    <div style={pageWrapperStyle}>
-      <img src={backgroundImg} alt="background" style={backgroundFullStyle} />
+      <div style={pageWrapperStyle}>
+        <img src={backgroundImg} alt="background" style={backgroundFullStyle} />
 
-      <div style={textBlockStyle}>
-        <h1 style={mainTextStyle}>
-          Here’s a playlist
-          <span style={{ display: "block", textDecoration: "underline" }}>that your day</span>
-        </h1>
-      </div>
-
-      <div style={cardWrapperStyle}>
-        <div style={leftCardStyle}>
-          <h2
-            style={{
-              fontSize: "80px",
-              marginBottom: "1rem",
-              background: "linear-gradient(0deg, #9B8595 0%, #FFFFFF 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}
-          >
-            Jun
-          </h2>
-          <p style={{ lineHeight: 1.6, color:"#A7A5A6" }}>
-            Hello<br></br>
-            For your better day, JUN<br></br>
-            You’ve made it through another day,<br></br> and that’s more than
-            enough.<br></br>
-            Let these songs be a soft place for<br></br> your heart to rest
-            tonight.
-          </p>
+        <div style={textBlockStyle}>
+          <h1 style={mainTextStyle}>
+            Here’s a playlist
+            <span style={{ display: "block", textDecoration: "underline" }}>that your day</span>
+          </h1>
         </div>
 
-        <div style={rightCardStyle}>
-          <div style={songListHeaderStyle}>
-            <span style={{ fontWeight: "bold" }}>Best Songs</span>
-            <button style={viewAllButtonStyle}>View all</button>
-          </div>
-          {[...Array(5)].map((_, i) => (
-            <div key={i} style={songRowStyle}>
-              <img src={songThumbnail} alt="song" style={songImgStyle} />
-              <div style={{ flex: 2 }}>
-                <div style={{ fontSize: "1rem", fontWeight: "500" }}>제목</div>
-                <div style={{ fontSize: "0.8rem", color: "#ccc" }}>artist</div>
-              </div>
-              <div
+        <div style={cardWrapperStyle}>
+          <div style={leftCardStyle}>
+            <h2
                 style={{
-                  fontSize: "0.8rem",
-                  color: "#ccc",
-                  marginRight: "1rem",
+                  fontSize: "80px",
+                  marginBottom: "1rem",
+                  background: "linear-gradient(0deg, #9B8595 0%, #FFFFFF 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
                 }}
-              >
-                2:36
-              </div>
-              <button style={playButtonStyle}>▶</button>
+            >
+              Jun
+            </h2>
+            <p style={{ lineHeight: 1.6, color: "#A7A5A6" }}>
+              {loading ? "Loading..." : (
+                  <>
+                    Hello<br />
+                    You felt <b>{playlist.sentiment}</b> today.<br />
+                    We chose this music just for you.<br />
+                    Take a rest and enjoy your song.
+                  </>
+              )}
+            </p>
+          </div>
+
+          <div style={rightCardStyle}>
+            <div style={songListHeaderStyle}>
+              <span style={{ fontWeight: "bold" }}>Best Songs</span>
+              <button style={viewAllButtonStyle}>View all</button>
             </div>
-          ))}
+
+            {loading ? (
+                <div style={{ color: "white" }}>Loading playlist...</div>
+            ) : (
+                <div style={songRowStyle}>
+                  <img src={songThumbnail} alt="song" style={songImgStyle} />
+                  <div style={{ flex: 2 }}>
+                    <div style={{ fontSize: "1rem", fontWeight: "500" }}>{playlist.song}</div>
+                    <div style={{ fontSize: "0.8rem", color: "#ccc" }}>{playlist.artist}</div>
+                  </div>
+                  <div style={{ fontSize: "0.8rem", color: "#ccc", marginRight: "1rem" }}>
+                    3:00
+                  </div>
+                  <a href={playlist.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
+                    <button style={playButtonStyle}>▶</button>
+                  </a>
+                </div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
   );
 };
 

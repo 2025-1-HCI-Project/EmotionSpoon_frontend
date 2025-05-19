@@ -30,78 +30,42 @@ const DiaryPage = () => {
         diaryContent: diaryContent,
       };
 
-      const response = await ApiService.diaryUpload(file, diaryDTO);
-      console.log("업로드 성공:", response.data);
+      const saveResponse = await ApiService.diarySave(file, diaryDTO);
+      const diaryId = saveResponse.data.diaryId;
 
-      alert("일기가 저장되었습니다!");
-      navigate("/analyzing");
+      navigate(`/analyzing/${diaryId}`);
     } catch (error) {
-      console.error("업로드 실패!");
-      if (error.response) {
-        console.error("에러 응답 데이터:", error.response.data);
-      } else {
-        console.error("네트워크 또는 클라이언트 에러:", error.message);
-      }
-      alert("업로드 실패. 콘솔을 확인해주세요.");
+      console.error("일기 저장 실패!", error);
     }
   };
+
 
   return (
       <div style={backgroundStyle}>
         <div style={pageStyle}>
           <h1 style={titleStyle}>Write about your day</h1>
-
           <div style={horizontalGroupStyle}>
             <div style={smallInputGroupStyle}>
               <label style={labelStyle}>Date</label>
-              <input
-                  type="date"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
-                  style={smallInputStyle}
-              />
+              <input type="date" value={date} onChange={(e) => setDate(e.target.value)} style={smallInputStyle} />
             </div>
-
             <div style={smallInputGroupStyle}>
               <label style={labelStyle}>Title</label>
-              <input
-                  type="text"
-                  placeholder="Type your title"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  style={smallInputStyle}
-              />
+              <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} style={smallInputStyle} />
             </div>
           </div>
 
           <div style={formGroupStyle}>
             <label style={labelStyle}>Diary</label>
-            <small style={smallTextStyle}>
-              Please describe your day and write it down to help you remember it.
-            </small>
-            <textarea
-                placeholder="Type your diary here..."
-                value={diaryContent}
-                onChange={(e) => setDiaryContent(e.target.value)}
-                style={textareaStyle}
-            />
+            <textarea value={diaryContent} onChange={(e) => setDiaryContent(e.target.value)} style={textareaStyle} />
           </div>
 
           <div style={formGroupStyle}>
             <label style={labelStyle}>Upload diary file</label>
-            <small style={smallTextStyle}>
-              Take a picture of your diary and upload here
-            </small>
-            <input
-                type="file"
-                onChange={handleFileChange}
-                style={fileInputStyle}
-            />
+            <input type="file" onChange={handleFileChange} style={fileInputStyle} />
           </div>
 
-          <button style={saveButtonStyle} onClick={handleSave}>
-            Save
-          </button>
+          <button style={saveButtonStyle} onClick={handleSave}>Save</button>
         </div>
       </div>
   );

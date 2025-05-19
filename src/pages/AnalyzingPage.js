@@ -1,19 +1,38 @@
 // 감정 분석 페이지
-import React from 'react';
-import backgroundImg from "../img/analyzing_background.png"; 
-import diaryPhoto from "../img/example.png"; 
+import React, { useEffect, useState } from 'react';
+import {useNavigate, useParams} from 'react-router-dom';
+import ApiService from '../util/ApiService';
+import backgroundImg from "../img/analyzing_background.png";
+import diaryPhoto from "../img/example.png";
 
 const AnalyzingPage = () => {
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const [analyzing, setAnalyzing] = useState(true);
+
+    useEffect(() => {
+        const analyze = async () => {
+            try {
+                await ApiService.analyzeDiary(id);
+            } catch (error) {
+                console.error("분석 실패!", error);
+            }
+        };
+
+        analyze();
+    }, [id, navigate]);
+
+
     return (
         <div style={pageWrapperStyle}>
             <img src={backgroundImg} alt="background" style={backgroundFullStyle} />
-
             <div style={cardStyle}>
                 <div style={textSectionStyle}>
                     <h1 style={mainTextStyle}>Analyzing your day...</h1>
                     <p style={subTextStyle}>
-                        analyzing your day and thinking<br/>
-                        about the music that ends your day.
+                        {analyzing
+                            ? "analyzing your day and thinking\nabout the music that ends your day."
+                            : "Analysis complete! 🎵"}
                     </p>
                 </div>
                 <div style={imageSectionStyle}>
