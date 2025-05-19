@@ -12,11 +12,13 @@ const AnalyzingPlaylistPage = () => {
   useEffect(() => {
     const fetchPlaylist = async () => {
       try {
-        const response = await ApiService.getPlaylist(id);
-        setPlaylist(response.data);
-        setLoading(false);
+        const response = await ApiService.getPlaylistByDiaryId(id);
+        if (response.data) {
+          setPlaylist(response.data);
+        }
       } catch (error) {
         console.error("추천곡 불러오기 실패", error);
+      } finally {
         setLoading(false);
       }
     };
@@ -38,17 +40,17 @@ const AnalyzingPlaylistPage = () => {
           <div style={leftCardStyle}>
             <h2
                 style={{
-                  fontSize: "80px",
+                  fontSize: "60px",
                   marginBottom: "1rem",
                   background: "linear-gradient(0deg, #9B8595 0%, #FFFFFF 100%)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                 }}
             >
-              Jun
+              {loading || !playlist ? "" : playlist.username}
             </h2>
             <p style={{ lineHeight: 1.6, color: "#A7A5A6" }}>
-              {loading ? "Loading..." : (
+              {loading || !playlist ? "Loading..." : (
                   <>
                     Hello<br />
                     You felt <b>{playlist.sentiment}</b> today.<br />
@@ -65,7 +67,7 @@ const AnalyzingPlaylistPage = () => {
               <button style={viewAllButtonStyle}>View all</button>
             </div>
 
-            {loading ? (
+            {loading || !playlist ? (
                 <div style={{ color: "white" }}>Loading playlist...</div>
             ) : (
                 <div style={songRowStyle}>
@@ -74,10 +76,7 @@ const AnalyzingPlaylistPage = () => {
                     <div style={{ fontSize: "1rem", fontWeight: "500" }}>{playlist.song}</div>
                     <div style={{ fontSize: "0.8rem", color: "#ccc" }}>{playlist.artist}</div>
                   </div>
-                  <div style={{ fontSize: "0.8rem", color: "#ccc", marginRight: "1rem" }}>
-                    3:00
-                  </div>
-                  <a href={playlist.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
+                  <a href={playlist.link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
                     <button style={playButtonStyle}>▶</button>
                   </a>
                 </div>

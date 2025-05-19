@@ -37,6 +37,12 @@ const ApiService = {
             withCredentials: true,
         });
     },
+
+    getPlaylistByDiaryId: (diaryId) => {
+        return axios.get(`${BASE_URL}/api/playlist/${diaryId}`, {
+            withCredentials: true,
+        });
+    },
 };
 
 export default ApiService;

@@ -8,12 +8,13 @@ import diaryPhoto from "../img/example.png";
 const AnalyzingPage = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const [analyzing, setAnalyzing] = useState(true);
+    const [analyzing] = useState(true);
 
     useEffect(() => {
         const analyze = async () => {
             try {
                 await ApiService.analyzeDiary(id);
+                navigate(`/analyzing/${id}/playlist`);
             } catch (error) {
                 console.error("분석 실패!", error);
             }
