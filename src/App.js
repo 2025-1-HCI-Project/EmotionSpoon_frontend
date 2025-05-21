@@ -7,7 +7,7 @@ function App() {
   return (
       <>
           <GlobalStyle />
-          <BrowserRouter>
+          <BrowserRouter basename="/ice">
               <MyRoutes />
           </BrowserRouter>
       </>

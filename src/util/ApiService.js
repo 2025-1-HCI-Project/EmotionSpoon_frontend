@@ -32,17 +32,23 @@ const ApiService = {
         });
     },
 
+    //📈 분석 Api
     analyzeDiary: (diaryId) => {
         return axios.post(`${BASE_URL}/api/diary/analyze`, { id: diaryId }, {
             withCredentials: true,
         });
     },
 
+    //🎶 플레이 리스트 Api
     getPlaylistByDiaryId: (diaryId) => {
         return axios.get(`${BASE_URL}/api/playlist/${diaryId}`, {
             withCredentials: true,
         });
     },
+    //📅 캘린더 Api
+    getAllCalendarEvents: () => {
+        return apiInstance.get('/api/diary/events');
+    }
 };
 
 export default ApiService;
