@@ -5,7 +5,8 @@ import "./SignUpPage.css";
 
 const SignUpPage = () => {
   const [form, setForm] = useState({
-    fullName: "",
+    username: "",
+    userId: "",
     email: "",
     password: ""
   });
@@ -27,41 +28,52 @@ const SignUpPage = () => {
   };
 
   return (
-    <div className="signup-page">
-      <div className="signup-container">
-        <h2 className="title">Register</h2>
-        <form className="signup-form" onSubmit={handleSubmit}>
-          <label>Full Name :</label>
-          <input
-            name="fullName"
-            placeholder="Enter your name"
-            onChange={handleChange}
-            required
-          />
-          <label>Email Address :</label>
-          <input
-            name="email"
-            type="email"
-            placeholder="Enter your email"
-            onChange={handleChange}
-            required
-          />
-          <label>Password :</label>
-          <input
-            name="password"
-            type="password"
-            placeholder="Enter your password"
-            onChange={handleChange}
-            required
-          />
-          <button type="submit" className="signup-button">Sign up</button>
-          <p className="login-prompt">
-          Already have an account?
-          <Link to="/login" className="forgot-link"> Login</Link>
-        </p>
-        </form>
+      <div className="signup-page">
+        <div className="signup-container">
+          <h2 className="title">Register</h2>
+          <form className="signup-form" onSubmit={handleSubmit}>
+            <label>Username :</label>
+            <input
+                name="username"
+                placeholder="Enter your name"
+                value={form.username}
+                onChange={handleChange}
+                required
+            />
+            <label>User ID :</label>
+            <input
+                name="userId"
+                placeholder="Enter your ID"
+                value={form.userId}
+                onChange={handleChange}
+                required
+            />
+            <label>Email Address :</label>
+            <input
+                name="email"
+                type="email"
+                placeholder="Enter your email"
+                value={form.email}
+                onChange={handleChange}
+                required
+            />
+            <label>Password :</label>
+            <input
+                name="password"
+                type="password"
+                placeholder="Enter your password"
+                value={form.password}
+                onChange={handleChange}
+                required
+            />
+            <button type="submit" className="signup-button">Sign up</button>
+            <p className="login-prompt">
+              Already have an account?
+              <Link to="/login" className="forgot-link"> Login</Link>
+            </p>
+          </form>
+        </div>
       </div>
-    </div>
   );
 };
 
