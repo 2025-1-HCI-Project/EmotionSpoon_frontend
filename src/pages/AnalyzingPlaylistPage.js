@@ -67,20 +67,24 @@ const AnalyzingPlaylistPage = () => {
               <button style={viewAllButtonStyle}>View all</button>
             </div>
 
-            {loading || !playlist ? (
-                <div style={{ color: "white" }}>Loading playlist...</div>
-            ) : (
-                <div style={songRowStyle}>
-                  <img src={songThumbnail} alt="song" style={songImgStyle} />
-                  <div style={{ flex: 2 }}>
-                    <div style={{ fontSize: "1rem", fontWeight: "500" }}>{playlist.song}</div>
-                    <div style={{ fontSize: "0.8rem", color: "#ccc" }}>{playlist.artist}</div>
+            <div style={songListBodyStyle}>
+              {loading || !playlist ? (
+                  <div style={{ color: "white" }}>Loading playlist...</div>
+              ) : (
+                playlist.map((music, index) => (
+                  <div key={music.song + index} style={songRowStyle}>
+                    <img src={songThumbnail} alt="song" style={songImgStyle} />
+                    <div style={{ flex: 2 }}>
+                      <div style={{ fontSize: "1rem", fontWeight: "500" }}>{music.song}</div>
+                      <div style={{ fontSize: "0.8rem", color: "#ccc" }}>{music.artist}</div>
+                    </div>
+                    <a href={music.link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
+                      <button style={playButtonStyle}>▶</button>
+                    </a>
                   </div>
-                  <a href={playlist.link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
-                    <button style={playButtonStyle}>▶</button>
-                  </a>
-                </div>
-            )}
+                ))
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -196,4 +200,9 @@ const viewAllButtonStyle = {
   color: "white",
   cursor: "pointer",
   fontSize: "0.9rem",
+};
+
+const songListBodyStyle = {
+  maxHeight: "300px",
+  overflow: "scroll"
 };
