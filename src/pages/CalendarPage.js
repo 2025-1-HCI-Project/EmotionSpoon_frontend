@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import backgroundImg from "../img/calendar_background.png";
+import songThumbnail from "../img/example.png";
 import 'react-calendar/dist/Calendar.css';
 import ApiService from '../util/ApiService';
 
@@ -79,6 +80,11 @@ const CalendarPage = () => {
             <div style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>Date</div>
             <div style={{ opacity: 0.7, marginBottom: '1.5rem' }}>{formattedDate}</div>
             <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+              <img
+                    src={songThumbnail}
+                    alt="song"
+                    style={songImgStyle}
+                  />
               <div style={{ flex: 1 }}>
                 <div style={{ fontWeight: 'bold' }}>{selectedEvent?.artist || 'artist'}</div>
               </div>
@@ -161,3 +167,10 @@ const CalendarPage = () => {
 };
 
 export default CalendarPage;
+
+const songImgStyle = {
+  width: "45px",
+  height: "45px",
+  borderRadius: "8px",
+  objectFit: "cover",
+};
