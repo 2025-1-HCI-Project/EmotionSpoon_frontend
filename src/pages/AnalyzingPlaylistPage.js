@@ -74,7 +74,7 @@ const AnalyzingPlaylistPage = () => {
               <>
                 Hello
                 <br />
-                You felt <b>{playlist[0].sentiment}</b> today.
+                You felt <b style={{ color: "#FFFFFF", fontSize: "1.3rem" }}> {playlist[0].sentiment}</b> today.
                 <br />
                 We chose this music just for you.
                 <br />

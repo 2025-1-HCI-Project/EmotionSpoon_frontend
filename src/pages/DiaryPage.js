@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import backgroundImg from "../img/diary_background.png";
 import { useNavigate } from 'react-router-dom';
 import ApiService from "../util/ApiService";
+import { px } from "framer-motion";
 
 const DiaryPage = () => {
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
@@ -126,7 +127,8 @@ const smallInputStyle = {
   border: "none",
   outline: "none",
   backgroundColor: 'rgba(176, 186, 195, 0.32)',
-  color: "#333",
+  color: "#FFFFFF",
+  fontSize: "15px"
 };
 
 const formGroupStyle = {
@@ -146,15 +148,16 @@ const textareaStyle = {
   border: "none",
   outline: "none",
   backgroundColor: 'rgba(176, 186, 195, 0.32)',
-  color: "#8A8A8A",
+  color: "#FFFFFF",
   minHeight: "200px",
+  fontSize: "17px"
 };
 
 const fileInputStyle = {
   padding: "1rem",
   borderRadius: "8px",
   backgroundColor: 'rgba(176, 186, 195, 0.32)',
-  color: "#333",
+  color: "#FFFFFF",
   cursor: "pointer",
 };
 
