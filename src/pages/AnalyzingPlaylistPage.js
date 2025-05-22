@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import ReactPlayer from "react-player";
 import ApiService from "../util/ApiService";
 import backgroundImg from "../img/Analyzing_playlist_background.png";
 import songThumbnail from "../img/example.png";
@@ -8,6 +9,10 @@ const AnalyzingPlaylistPage = () => {
   const { id } = useParams();
   const [playlist, setPlaylist] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  // 현재 재생 중인 URL과 재생 상태를 관리
+  const [currentUrl, setCurrentUrl] = useState(null);
+  const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
     const fetchPlaylist = async () => {
@@ -25,69 +30,113 @@ const AnalyzingPlaylistPage = () => {
     fetchPlaylist();
   }, [id]);
 
-  return (
-      <div style={pageWrapperStyle}>
-        <img src={backgroundImg} alt="background" style={backgroundFullStyle} />
+  const handlePlayClick = (url) => {
+    if (currentUrl === url) {
+      // 같은 곡을 다시 누르면 토글
+      setPlaying((p) => !p);
+    } else {
+      // 다른 곡을 누르면 새로 재생
+      setCurrentUrl(url);
+      setPlaying(true);
+    }
+  };
 
-        <div style={textBlockStyle}>
-          <h1 style={mainTextStyle}>
-            Here’s a playlist
-            <span style={{ display: "block", textDecoration: "underline" }}>that your day</span>
-          </h1>
+  return (
+    <div style={pageWrapperStyle}>
+      <img src={backgroundImg} alt="background" style={backgroundFullStyle} />
+
+      <div style={textBlockStyle}>
+        <h1 style={mainTextStyle}>
+          Here’s a playlist
+          <span style={{ display: "block", textDecoration: "underline" }}>
+            that your day
+          </span>
+        </h1>
+      </div>
+
+      <div style={cardWrapperStyle}>
+        <div style={leftCardStyle}>
+          <h2
+            style={{
+              fontSize: "60px",
+              marginBottom: "1rem",
+              background: "linear-gradient(0deg, #9B8595 0%, #FFFFFF 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+          >
+            {loading || !playlist ? "" : playlist[0].username}
+          </h2>
+          <p style={{ lineHeight: 1.6, color: "#A7A5A6" }}>
+            {loading || !playlist ? (
+              "Loading..."
+            ) : (
+              <>
+                Hello
+                <br />
+                You felt <b>{playlist[0].sentiment}</b> today.
+                <br />
+                We chose this music just for you.
+                <br />
+                Take a rest and enjoy your song.
+              </>
+            )}
+          </p>
         </div>
 
-        <div style={cardWrapperStyle}>
-          <div style={leftCardStyle}>
-            <h2
-                style={{
-                  fontSize: "60px",
-                  marginBottom: "1rem",
-                  background: "linear-gradient(0deg, #9B8595 0%, #FFFFFF 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                }}
-            >
-              {loading || !playlist ? "" : playlist.username}
-            </h2>
-            <p style={{ lineHeight: 1.6, color: "#A7A5A6" }}>
-              {loading || !playlist ? "Loading..." : (
-                  <>
-                    Hello<br />
-                    You felt <b>{playlist.sentiment}</b> today.<br />
-                    We chose this music just for you.<br />
-                    Take a rest and enjoy your song.
-                  </>
-              )}
-            </p>
+        <div style={rightCardStyle}>
+          <div style={songListHeaderStyle}>
+            <span style={{ fontWeight: "bold" }}>Best Songs</span>
+            <button style={viewAllButtonStyle}>View all</button>
           </div>
 
-          <div style={rightCardStyle}>
-            <div style={songListHeaderStyle}>
-              <span style={{ fontWeight: "bold" }}>Best Songs</span>
-              <button style={viewAllButtonStyle}>View all</button>
-            </div>
-
-            <div style={songListBodyStyle}>
-              {loading || !playlist ? (
-                  <div style={{ color: "white" }}>Loading playlist...</div>
-              ) : (
-                playlist.map((music, index) => (
-                  <div key={music.song + index} style={songRowStyle}>
-                    <img src={songThumbnail} alt="song" style={songImgStyle} />
-                    <div style={{ flex: 2 }}>
-                      <div style={{ fontSize: "1rem", fontWeight: "500" }}>{music.song}</div>
-                      <div style={{ fontSize: "0.8rem", color: "#ccc" }}>{music.artist}</div>
+          <div style={songListBodyStyle}>
+            {loading || !playlist ? (
+              <div style={{ color: "white" }}>Loading playlist...</div>
+            ) : (
+              playlist.map((music, index) => (
+                <div key={music.song + index} style={songRowStyle}>
+                  <img
+                    src={songThumbnail}
+                    alt="song"
+                    style={songImgStyle}
+                  />
+                  <div style={{ flex: 2 }}>
+                    <div
+                      style={{ fontSize: "1rem", fontWeight: "500" }}
+                    >
+                      {music.song}
                     </div>
-                    <a href={music.link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
-                      <button style={playButtonStyle}>▶</button>
-                    </a>
+                    <div style={{ fontSize: "0.8rem", color: "#ccc" }}>
+                      {music.artist}
+                    </div>
                   </div>
-                ))
-              )}
-            </div>
+                  {/* a 태그 삭제, playButton으로 재생 제어 */}
+                  <button
+                    style={playButtonStyle}
+                    onClick={() => handlePlayClick(music.link)}
+                  >
+                    {currentUrl === music.link && playing
+                      ? "▌▌"
+                      : "▶"}
+                  </button>
+                </div>
+              ))
+            )}
           </div>
+
+          {/* 숨겨진 플레이어: 화면에 보이지 않지만 음원은 재생 */}
+          <ReactPlayer
+            url={currentUrl}
+            playing={playing}
+            controls={false}
+            width={0}
+            height={0}
+            style={{ display: "none" }}
+          />
         </div>
       </div>
+    </div>
   );
 };
 
@@ -155,7 +204,7 @@ const leftCardStyle = {
 const rightCardStyle = {
   width: "465px",
   height: "400px",
-  borderRadius: "30px 30px 30px 30px",
+  borderRadius: "30px",
   backgroundColor: "rgba(255,255,255,0.05)",
   padding: "1.5rem",
   backdropFilter: "blur(20px)",
@@ -169,11 +218,16 @@ const songListHeaderStyle = {
   marginBottom: "2rem",
 };
 
+const songListBodyStyle = {
+  maxHeight: "300px",
+  overflow: "scroll",
+};
+
 const songRowStyle = {
   display: "flex",
   alignItems: "center",
   gap: "2rem",
-  marginBottom: "1.5rem"
+  marginBottom: "1.5rem",
 };
 
 const songImgStyle = {
@@ -200,9 +254,4 @@ const viewAllButtonStyle = {
   color: "white",
   cursor: "pointer",
   fontSize: "0.9rem",
-};
-
-const songListBodyStyle = {
-  maxHeight: "300px",
-  overflow: "scroll"
 };
