@@ -39,7 +39,7 @@ const DiaryPage = () => {
       setShowTextModal(true);
       document.body.style.overflow = "hidden"; // 모달 뒤가 스크롤되는 문제 해결
     } catch (error) {
-      alert("텍스트 추출에 실패했습니다.");
+      alert("Failed to extract text");
       console.error("텍스트 추출 실패:", error);
     }
   };
@@ -66,7 +66,7 @@ const DiaryPage = () => {
     try {
       const storedMemberId = localStorage.getItem("memberId");
       if (!storedMemberId) {
-        alert("로그인이 필요합니다.");
+        alert("Please log in to continue");
         navigate("/login");
         return;
       } 
@@ -83,7 +83,7 @@ const DiaryPage = () => {
 
       navigate(`/analyzing/${diaryId}`);
     } catch (error) {
-      console.error("일기 저장 실패!", error);
+      console.error("Failed to save file", error);
     }
   };
 
@@ -115,9 +115,9 @@ const DiaryPage = () => {
                 onClick={() => document.getElementById("fileInput").click()}
                 style={{ ...modalButtonStyle, padding: "0.6rem 1rem", backgroundColor: "#FA2870" }}
               >
-                파일 선택
+                Select file
               </button>
-              <span style={smallTextStyle}>{fileName || "선택된 파일 없음"}</span>
+              <span style={smallTextStyle}>{fileName || "No file selected"}</span>
             </div>
             <input
               type="file"
@@ -132,10 +132,10 @@ const DiaryPage = () => {
           {showModal && (
           <div style={modalOverlayStyle}>
             <div style={modalStyle}>
-              <p>이 사진을 전송하여 텍스트를 추출하시겠습니까?</p>
+              <p>Would you like to send this photo to extract text?</p>
               <div style={{ display: "flex", justifyContent: "space-around", marginTop: "1rem" }}>
-                <button onClick={handleModalConfirm} style={modalButtonStyle}>예</button>
-                <button onClick={handleModalCancel} style={modalButtonStyle}>아니오</button>
+                <button onClick={handleModalConfirm} style={modalButtonStyle}>Yes</button>
+                <button onClick={handleModalCancel} style={modalButtonStyle}>No</button>
               </div>
             </div>
           </div>
@@ -144,7 +144,7 @@ const DiaryPage = () => {
         {loading && (
           <div style={modalOverlayStyle}>
             <div style={modalStyle}>
-              <p>텍스트를 추출하는 중입니다...</p>
+              <p>Extracting text...</p>
               <div className="loader" style={{ marginTop: "1rem" }}></div>
             </div>
           </div>
@@ -153,7 +153,9 @@ const DiaryPage = () => {
         {showTextModal && (
           <div style={modalOverlayStyle}>
             <div style={{ ...modalStyle, width: "500px" }}>
-              <p style={{ fontWeight: "bold", marginBottom: "1rem" }}>사진에서 추출된 텍스트를 일기에 추가할까요?</p>
+              <p style={{ fontWeight: "bold", marginBottom: "1rem" }}>
+              Would you like to add the extracted text to your diary?
+              </p>
               <div style={{
                 maxHeight: "200px",
                 overflowY: "auto",
@@ -163,11 +165,11 @@ const DiaryPage = () => {
                 textAlign: "left",
                 whiteSpace: "pre-wrap"
               }}>
-                {extractedText || "(비어 있음)"}
+                {extractedText || "Empty)"}
               </div>
               <div style={{ display: "flex", justifyContent: "space-around" }}>
-                <button onClick={handleAddExtractedText} style={modalButtonStyle}>추가</button>
-                <button onClick={handleSkipExtractedText} style={modalButtonStyle}>건너뛰기</button>
+                <button onClick={handleAddExtractedText} style={modalButtonStyle}>Add</button>
+                <button onClick={handleSkipExtractedText} style={modalButtonStyle}>Skip</button>
               </div>
             </div>
           </div>
