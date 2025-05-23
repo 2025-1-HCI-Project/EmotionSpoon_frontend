@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
+import ReactPlayer from "react-player";
 import backgroundImg from "../img/calendar_background.png";
 import songThumbnail from "../img/example.png";
 import 'react-calendar/dist/Calendar.css';
@@ -10,6 +11,10 @@ const dayNames = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
 const CalendarPage = () => {
   const [date, setDate] = useState(new Date());
   const [events, setEvents] = useState([]);
+
+  // 현재 재생 중인 URL과 재생 상태를 관리
+  const [currentUrl, setCurrentUrl] = useState(null);
+  const [playing, setPlaying] = useState(false);
 
   const formatDate = (d) =>
       `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
@@ -22,10 +27,29 @@ const CalendarPage = () => {
         .catch(err => console.error('이벤트 로드 실패:', err));
   }, []);
 
+  const handlePlayClick = (url) => {
+    if (url == null) {
+      // null인 노래를 누르면 정지
+      setCurrentUrl(null);
+      setPlaying(false);
+      return;
+    }
+
+    if (currentUrl === url) {
+      // 같은 곡을 다시 누르면 토글
+      setPlaying((p) => !p);
+    } else {
+      // 다른 곡을 누르면 새로 재생
+      setCurrentUrl(url);
+      setPlaying(true);
+    }
+  };
+
   const onDateChange = (newDate) => setDate(newDate);
 
-  const selectedEvent = events
+  const selectedEvent = [...events]
       .filter(e => e.date === formatDate(date))
+      .reverse() // 가장 최근에 작성한 일기 기준(find는 첫 번째 인덱스를 조회)
       .find(e => e.song && e.artist);
 
   const formattedDate = `${date.getFullYear()} / ${String(date.getMonth()+1).padStart(2,'0')} / ${String(date.getDate()).padStart(2,'0')} (${dayNames[date.getDay()]})`;
@@ -54,7 +78,8 @@ const CalendarPage = () => {
   };
   const rightStyle = {
     flex: '1', background: 'rgba(255,255,255,0.05)', borderRadius: '1rem',
-    padding: '4rem', boxShadow: '0 8px 32px rgba(0,0,0,0.5)', color: 'white'
+    padding: '4rem', boxShadow: '0 8px 32px rgba(0,0,0,0.5)', color: 'white',
+    maxHeight: "465px", overflow: "scroll"
   };
 
   return (
@@ -88,10 +113,12 @@ const CalendarPage = () => {
               <div style={{ flex: 1 }}>
                 <div style={{ fontWeight: 'bold' }}>{selectedEvent?.artist || 'artist'}</div>
               </div>
-              <button style={{
-                background: 'none', border: '1px solid rgba(255,255,255,0.7)',
-                borderRadius: '50%', width: '32px', height: '32px', color: 'white', cursor: 'pointer'
-              }}>▶</button>
+              <button
+                style={playButtonStyle}
+                onClick={() => handlePlayClick(selectedEvent?.link)}
+              >
+                {currentUrl === selectedEvent?.link && playing ? "▌▌": "▶"}
+              </button>
             </div>
             <div style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>Diary</div>
 
@@ -125,6 +152,16 @@ const CalendarPage = () => {
                     }}/>
                 ))
             )}
+
+          {/* 숨겨진 플레이어: 화면에 보이지 않지만 음원은 재생 */}
+          <ReactPlayer
+            url={currentUrl}
+            playing={playing}
+            controls={false}
+            width={0}
+            height={0}
+            style={{ display: "none" }}
+          />
 
           </div>
         </div>
@@ -173,4 +210,15 @@ const songImgStyle = {
   height: "45px",
   borderRadius: "8px",
   objectFit: "cover",
+};
+
+const playButtonStyle = {
+  backgroundColor: "transparent",
+  color: "white",
+  border: "1px solid white",
+  borderRadius: "50%",
+  width: "30px",
+  height: "30px",
+  fontSize: "0.8rem",
+  cursor: "pointer",
 };

@@ -32,6 +32,17 @@ const ApiService = {
         });
     },
 
+    //📝 텍스트 추출 Api
+    extractTextFromImage: async (file) => {
+        const formData = new FormData();
+        formData.append("file", file);
+    
+        return await axios.post(`${BASE_URL}/api/diary/extract`, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: true,
+        });
+      },
+
     //📈 분석 Api
     analyzeDiary: (diaryId) => {
         return axios.post(`${BASE_URL}/api/diary/analyze`, { id: diaryId }, {
