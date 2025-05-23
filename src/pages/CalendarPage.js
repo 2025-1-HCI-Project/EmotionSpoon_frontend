@@ -78,7 +78,8 @@ const CalendarPage = () => {
   };
   const rightStyle = {
     flex: '1', background: 'rgba(255,255,255,0.05)', borderRadius: '1rem',
-    padding: '4rem', boxShadow: '0 8px 32px rgba(0,0,0,0.5)', color: 'white'
+    padding: '4rem', boxShadow: '0 8px 32px rgba(0,0,0,0.5)', color: 'white',
+    maxHeight: "465px", overflow: "scroll"
   };
 
   return (
