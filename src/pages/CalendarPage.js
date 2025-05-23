@@ -47,8 +47,9 @@ const CalendarPage = () => {
 
   const onDateChange = (newDate) => setDate(newDate);
 
-  const selectedEvent = events
+  const selectedEvent = [...events]
       .filter(e => e.date === formatDate(date))
+      .reverse() // 가장 최근에 작성한 일기 기준(find는 첫 번째 인덱스를 조회)
       .find(e => e.song && e.artist);
 
   const formattedDate = `${date.getFullYear()} / ${String(date.getMonth()+1).padStart(2,'0')} / ${String(date.getDate()).padStart(2,'0')} (${dayNames[date.getDay()]})`;
