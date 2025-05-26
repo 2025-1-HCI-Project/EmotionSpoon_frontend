@@ -101,7 +101,7 @@ const CalendarPage = () => {
             />
           </div>
           <div style={rightStyle}>
-            <h1 style={{ marginBottom: '1.5rem' }}>{selectedEvent?.song || 'Music Title'}</h1>
+            <h1 style={{ marginBottom: '1.5rem' }}>{selectedEvent?.sentiment || 'Music Title'}</h1>
             <div style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>Date</div>
             <div style={{ opacity: 0.7, marginBottom: '1.5rem' }}>{formattedDate}</div>
             <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
@@ -111,7 +111,15 @@ const CalendarPage = () => {
                     style={songImgStyle}
                   />
               <div style={{ flex: 1 }}>
-                <div style={{ fontWeight: 'bold' }}>{selectedEvent?.artist || 'artist'}</div>
+                <div style={{ fontWeight: 'bold' }}>
+                  <span style={{ fontSize: "1rem", fontWeight: "500" }}>
+                    {selectedEvent?.song || 'song'}
+                  </span>
+                  <span style={{marginRight: "10px"}}></span>
+                  <span style={{ fontSize: "0.8rem", color: "#ccc" }}>
+                    {selectedEvent?.artist || 'artist'}
+                  </span>
+                </div>
               </div>
               <button
                 style={playButtonStyle}
@@ -210,6 +218,7 @@ const songImgStyle = {
   height: "45px",
   borderRadius: "8px",
   objectFit: "cover",
+  margin: "8px 12px 8px 5px"
 };
 
 const playButtonStyle = {
