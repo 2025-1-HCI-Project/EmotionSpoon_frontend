@@ -111,7 +111,6 @@ const CalendarPage = () => {
             <h1 style={{ marginBottom: '1.5rem' }}>{selectedEvent?.sentiment || 'Sentiment'}</h1>
             <div style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>Date</div>
             <div style={{ opacity: 0.7, marginBottom: '1.5rem' }}>{formattedDate}</div>
-
             <div style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>Music</div>
             {playlist.length > 0 ? (
                 playlist.slice(0, 3).map((track, i) => (
@@ -218,6 +217,7 @@ const songImgStyle = {
   height: "45px",
   borderRadius: "8px",
   objectFit: "cover",
+  margin: "8px 12px 8px 5px"
 };
 
 const playButtonStyle = {
