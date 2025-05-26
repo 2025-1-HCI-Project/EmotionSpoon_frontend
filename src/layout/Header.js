@@ -72,26 +72,26 @@ const headerStyle = `
     white-space: nowrap;
     margin-left: 50px;
   }
-    
+
   .menu-button {
-  background: none;
-  border: none;
-  color: white;
-  font-weight: 500;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: inherit;
-  padding: 0;
-  text-decoration: none;
-}
+    background: none;
+    border: none;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+    padding: 0;
+    text-decoration: none;
+  }
 
-.menu-button:hover {
-  color: #ff4d6d;
-}
+  .menu-button:hover {
+    color: #ff4d6d;
+  }
 
-.menu-button.active {
-  color: #FA2870;
-}
+  .menu-button.active {
+    color: #FA2870;
+  }
 
   @media (max-width: 768px) {
     .header-inner {
@@ -125,68 +125,70 @@ const Header = () => {
   const handleLogout = () => {
     localStorage.removeItem("jwt_token");
     localStorage.removeItem("username");
+    localStorage.removeItem("memberId");
+    window.dispatchEvent(new Event("storage"));
     setUsername(null);
     alert("로그아웃 되었습니다.");
     navigate("/");
   };
 
   return (
-    <>
-      <div className="header">
-        <div className="header-inner">
-          <Link to="/" className="logo">
-            EMOTION SPOON 🎧
-          </Link>
-
-          <input className="search-box" type="text" placeholder="Search" />
-
-          <div className="menu">
-            <Link to="/" className={currentPath === "/" ? "active" : ""}>
-              Home
-            </Link>
-            <Link
-              to="/diary"
-              className={currentPath === "/diary" ? "active" : ""}
-            >
-              Diary
-            </Link>
-            <Link
-              to="/calendar"
-              className={currentPath === "/calendar" ? "active" : ""}
-            >
-              Calendar
+      <>
+        <div className="header">
+          <div className="header-inner">
+            <Link to="/" className="logo">
+              EMOTION SPOON 🎧
             </Link>
 
-            {username ? (
-              <>
+            <input className="search-box" type="text" placeholder="Search" />
+
+            <div className="menu">
+              <Link to="/" className={currentPath === "/" ? "active" : ""}>
+                Home
+              </Link>
+              <Link
+                  to="/diary"
+                  className={currentPath === "/diary" ? "active" : ""}
+              >
+                Diary
+              </Link>
+              <Link
+                  to="/calendar"
+                  className={currentPath === "/calendar" ? "active" : ""}
+              >
+                Calendar
+              </Link>
+
+              {username ? (
+                  <>
                 <span style={{ color: "white", fontWeight: "bold" }}>
                   {username}님
                 </span>
-                <button
-                  onClick={handleLogout}
-                  className={`menu-button ${
-                    currentPath === "/logout" ? "active" : ""
-                  }`}
-                >
-                  Log Out
-                </button>
-              </>
-            ) : (
-              <Link
-                to="/login"
-                className={`register-btn ${
-                  currentPath === "/login" ? "active" : ""
-                }`}
-              >
-                Log In
-              </Link>
-            )}
+                    <button
+                        onClick={handleLogout}
+                        className={`menu-button ${
+                            currentPath === "/logout" ? "active" : ""
+                        }`}
+                    >
+                      Log Out
+                    </button>
+                  </>
+              ) : (
+                  <Link
+                      to="/login"
+                      className={`register-btn ${
+                          currentPath === "/login" ? "active" : ""
+                      }`}
+                  >
+                    Log In
+                  </Link>
+              )}
+            </div>
           </div>
         </div>
-      </div>
 
-      <style>{headerStyle}</style>
-    </>
+        <style>{headerStyle}</style>
+      </>
   );
 };
 
