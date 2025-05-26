@@ -11,8 +11,7 @@ const dayNames = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
 const CalendarPage = () => {
   const [date, setDate] = useState(new Date());
   const [events, setEvents] = useState([]);
-
-  // 현재 재생 중인 URL과 재생 상태를 관리
+  const [playlist, setPlaylist] = useState([]);
   const [currentUrl, setCurrentUrl] = useState(null);
   const [playing, setPlaying] = useState(false);
 
@@ -22,35 +21,43 @@ const CalendarPage = () => {
   useEffect(() => {
     ApiService.getAllCalendarEvents()
         .then(res => {
-          setEvents(res.data);
+          const loginMemberId = localStorage.getItem('memberId');
+          const filtered = res.data.filter(event => event.m_id == loginMemberId);
+          setEvents(filtered);
         })
         .catch(err => console.error('이벤트 로드 실패:', err));
   }, []);
 
+  const selectedEvent = [...events]
+      .filter(e => e.date === formatDate(date))
+      .reverse()
+      .find(e => e.song && e.artist);
+
+  useEffect(() => {
+    if (selectedEvent?.diaryId) {
+      ApiService.getPlaylistByDiaryId(selectedEvent.diaryId)
+          .then(res => setPlaylist(res.data))
+          .catch(err => console.error("플레이리스트 불러오기 실패:", err));
+    } else {
+      setPlaylist([]);
+    }
+  }, [selectedEvent]);
+
   const handlePlayClick = (url) => {
     if (url == null) {
-      // null인 노래를 누르면 정지
       setCurrentUrl(null);
       setPlaying(false);
       return;
     }
-
     if (currentUrl === url) {
-      // 같은 곡을 다시 누르면 토글
-      setPlaying((p) => !p);
+      setPlaying(p => !p);
     } else {
-      // 다른 곡을 누르면 새로 재생
       setCurrentUrl(url);
       setPlaying(true);
     }
   };
 
   const onDateChange = (newDate) => setDate(newDate);
-
-  const selectedEvent = [...events]
-      .filter(e => e.date === formatDate(date))
-      .reverse() // 가장 최근에 작성한 일기 기준(find는 첫 번째 인덱스를 조회)
-      .find(e => e.song && e.artist);
 
   const formattedDate = `${date.getFullYear()} / ${String(date.getMonth()+1).padStart(2,'0')} / ${String(date.getDate()).padStart(2,'0')} (${dayNames[date.getDay()]})`;
 
@@ -104,32 +111,26 @@ const CalendarPage = () => {
             <h1 style={{ marginBottom: '1.5rem' }}>{selectedEvent?.sentiment || 'Sentiment'}</h1>
             <div style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>Date</div>
             <div style={{ opacity: 0.7, marginBottom: '1.5rem' }}>{formattedDate}</div>
-            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
-              <img
-                    src={songThumbnail}
-                    alt="song"
-                    style={songImgStyle}
-                  />
-              <div style={{ flex: 1 }}>
-                <div style={{ fontWeight: 'bold' }}>
-                  <span style={{ fontSize: "1rem", fontWeight: "500" }}>
-                    {selectedEvent?.song || 'song'}
-                  </span>
-                  <span style={{marginRight: "10px"}}></span>
-                  <span style={{ fontSize: "0.8rem", color: "#ccc" }}>
-                    {selectedEvent?.artist || 'artist'}
-                  </span>
-                </div>
-              </div>
-              <button
-                style={playButtonStyle}
-                onClick={() => handlePlayClick(selectedEvent?.link)}
-              >
-                {currentUrl === selectedEvent?.link && playing ? "▌▌": "▶"}
-              </button>
-            </div>
-            <div style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>Diary</div>
+            <div style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>Music</div>
+            {playlist.length > 0 ? (
+                playlist.slice(0, 3).map((track, i) => (
+                    <div key={i} style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+                      <img src={songThumbnail} alt={`song-${i}`} style={songImgStyle} />
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontWeight: 'bold', marginLeft: '1rem' }}>
+                          {track.artist} - {track.song}
+                        </div>
+                      </div>
+                      <button style={playButtonStyle} onClick={() => handlePlayClick(track.link)}>
+                        {currentUrl === track.link && playing ? "▌▌" : "▶"}
+                      </button>
+                    </div>
+                ))
+            ) : (
+                <div style={{ opacity: 0.7, marginBottom: '1rem' }}>추천된 곡이 없습니다.</div>
+            )}
 
+            <div style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>Diary</div>
             {selectedEvent?.diaryType === 0 ? (
                 <div style={{ marginBottom: '1rem' }}>{selectedEvent?.diary || '작성된 일기 없음'}</div>
             ) : (
@@ -151,26 +152,24 @@ const CalendarPage = () => {
             )}
 
             {!(selectedEvent?.song && selectedEvent?.artist) && (
-                Array.from({length: 6}).map((_, i) => (
+                Array.from({ length: 6 }).map((_, i) => (
                     <div key={i} style={{
                       width: '100%',
                       height: '1px',
                       background: 'rgba(255,255,255,0.3)',
                       marginBottom: '0.75rem'
-                    }}/>
+                    }} />
                 ))
             )}
 
-          {/* 숨겨진 플레이어: 화면에 보이지 않지만 음원은 재생 */}
-          <ReactPlayer
-            url={currentUrl}
-            playing={playing}
-            controls={false}
-            width={0}
-            height={0}
-            style={{ display: "none" }}
-          />
-
+            <ReactPlayer
+                url={currentUrl}
+                playing={playing}
+                controls={false}
+                width={0}
+                height={0}
+                style={{ display: "none" }}
+            />
           </div>
         </div>
         <style>{`
