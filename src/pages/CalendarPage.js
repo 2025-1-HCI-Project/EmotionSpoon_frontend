@@ -101,7 +101,7 @@ const CalendarPage = () => {
             />
           </div>
           <div style={rightStyle}>
-            <h1 style={{ marginBottom: '1.5rem' }}>{selectedEvent?.sentiment || 'Music Title'}</h1>
+            <h1 style={{ marginBottom: '1.5rem' }}>{selectedEvent?.sentiment || 'Sentiment'}</h1>
             <div style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>Date</div>
             <div style={{ opacity: 0.7, marginBottom: '1.5rem' }}>{formattedDate}</div>
             <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
